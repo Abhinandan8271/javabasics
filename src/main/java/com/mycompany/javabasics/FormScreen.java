@@ -16,8 +16,7 @@ import javax.swing.JOptionPane;
 /**
  *
  * @author ASUS
- */
-public class FormScreen extends javax.swing.JFrame {
+ */public class FormScreen extends javax.swing.JFrame {
     SingletonClass single = SingletonClass.getInstance();
     int selectedId = 0;
     
@@ -34,7 +33,7 @@ public class FormScreen extends javax.swing.JFrame {
         
             
             try{
-                   String singleData  = "SELECT * FROM registeredTable WHERE id=?";
+                   String singleData  = "SELECT * FROM registerTable WHERE id=?";
             PreparedStatement ps = single.connection.prepareCall(singleData);
             ps.setInt(1, id);
           //  ps.executeUpdate();
@@ -170,7 +169,7 @@ public class FormScreen extends javax.swing.JFrame {
                System.out.println("Update Data");
                             //   String query = "UPDATE complaintTable SET name =?, contactNo =?, roomNo=?, problemType=? WHERE id=?";
 
-                    String update = "UPDATE  registeredTable SET email=?, password=?  WHERE id =?";
+                    String update = "UPDATE  registerTable SET email= ?, password=?  WHERE id =?";
                 
                  try{
                 PreparedStatement sp = single.connection.prepareCall(update);
@@ -194,7 +193,7 @@ public class FormScreen extends javax.swing.JFrame {
             
             }else{
             
-            String insertuser = "INSERT INTO registeredtable(email,password) VALUES(?,?)";
+            String insertuser = "INSERT INTO registerTable(email,password) VALUES(?,?)";
             try{
                 PreparedStatement sp = single.connection.prepareCall(insertuser);
                 sp.setString(1, userName.getText());
@@ -209,14 +208,36 @@ public class FormScreen extends javax.swing.JFrame {
             }catch(SQLException exception){
                                 System.out.println("CHeck Exception: "+ exception);
 
+            
+
             }
             
+            String deleteuser = "DELETE FROM registerTable WHERE id = ?";
+            try{
+                PreparedStatement sp = single.connection.prepareCall(deleteuser);
+                sp.setInt(1, selectedId);
+                int insert = sp.executeUpdate();
+                if(insert > 0){
+                 JOptionPane.showMessageDialog(this, "Data Deleted");
+                 StudentTable table = new StudentTable();
+                 table.setVisible(true);
+                }
+                
+            }catch(SQLException exception){
+                                System.out.println("CHeck Exception: "+ exception);
+
+            }
+            
+           
+
+                    
             
             System.out.println("My name is: "+ userName.getText());
             System.out.println("My name is: "+ userPassword.getText());
         
         }
         }
+
         
     }//GEN-LAST:event_btnLoginActionPerformed
 
@@ -258,4 +279,5 @@ public class FormScreen extends javax.swing.JFrame {
     private javax.swing.JTextField userName;
     private javax.swing.JPasswordField userPassword;
     // End of variables declaration//GEN-END:variables
+
 }
